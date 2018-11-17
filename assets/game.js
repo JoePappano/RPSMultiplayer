@@ -109,8 +109,8 @@ function checkForWin() {
     })
 
     database.ref(winsOne).on("value", function(snapshot) {
-        $("#winsOne").text("Wins: " + snapshot.val().winsOne);
-        $("#winsTwo").text("Wins: " + snapshot.val().winsTwo);
+        $("#winsOne").text("Wins: " + winsOne);
+        $("#winsTwo").text("Wins: " + winsTwo);
 
     })
     console.log("p1 wins: " + winsOne);
