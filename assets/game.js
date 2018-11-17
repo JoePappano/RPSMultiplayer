@@ -85,13 +85,13 @@ $(document).ready(function () {
 function checkForWin() {
     console.log("User Guess 1" + userGuess1)
     console.log("User Guess 2" + userGuess2)
-    if(database.ref("userOneGuess") == "paper" && database.ref("userTwoGuess") == "rock"){
+    if(userGuess1 == "paper" && userTwoGuess == "rock"){
         winsOne++;
     }
     if(userGuess1 == "rock" && userGuess2 == "scissors"){
         winsOne++;
     }
-    if(userGuess1 == "scissors" && userGuess2 == "paper"){
+    if(userGuess1  == "scissors" && userGuess2 == "paper"){
         winsOne++;
     }
     if(userGuess2 == "paper" && userGuess1 == "rock"){
@@ -108,10 +108,10 @@ function checkForWin() {
         winsTwo: winsTwo,
     })
 
-    database.ref(winsOne).on("value", function(snapshot) {
+    database.ref().on("value", function(snapshot) {
         $("#winsOne").text("Wins: " + winsOne);
         $("#winsTwo").text("Wins: " + winsTwo);
-
+        checkForWin();
     })
     console.log("p1 wins: " + winsOne);
     console.log("p2 wins : " + winsTwo);
