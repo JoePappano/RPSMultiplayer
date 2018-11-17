@@ -85,7 +85,7 @@ $(document).ready(function () {
 function checkForWin() {
     console.log("User Guess 1" + userGuess1)
     console.log("User Guess 2" + userGuess2)
-    if(userGuess1 == "paper" && userGuess2 == "rock"){
+    if(database.ref("userOneGuess") == "paper" && database.ref("userTwoGuess") == "rock"){
         winsOne++;
     }
     if(userGuess1 == "rock" && userGuess2 == "scissors"){
