@@ -62,12 +62,10 @@ $(document).ready(function () {
     })
 
     $("#submitOne").on("click", function(){
-        database.ref().push({
+        database.ref().update({
             userOneGuess: userGuess1,
         })
-        .then(function(snap) {
-            console.log(snap.key);
-            checkForWin();
+        checkForWin();
         })
     })
 
@@ -78,7 +76,7 @@ $(document).ready(function () {
     })
 
     $("#submitTwo").on("click", function(){
-        database.ref().push({
+        database.ref().update({
             userTwoGuess: userGuess2,
         })
         checkForWin();
