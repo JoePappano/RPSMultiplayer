@@ -67,7 +67,6 @@ $(document).ready(function () {
         })
         checkForWin();
         })
-    })
 
 
     $(document).on("click", ".press2", function () {
