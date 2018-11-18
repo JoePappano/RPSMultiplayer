@@ -18,16 +18,23 @@ var userGuess2;
 
 $(document).ready(function () {
     firebase.initializeApp(config);
-
     var database = firebase.database();
 
-    database.ref().on("value", function(snapshot) {
+    $("#restart").on("click", function () {
+        database.ref().set({
+            playerOne: null,
+            playerTwo: null
+        });
+        window.location.reload();
+    })
+
+    database.ref().on("value", function (snapshot) {
         $("#winsOne").text("Wins: " + snapshot.val().winsOne);
         $("#winsTwo").text("Wins: " + snapshot.val().winsTwo);
         $(".userOne").text(snapshot.val().playerOne);
         $(".userTwo").text(snapshot.val().playerTwo);
     })
-//Functions
+    //Functions
 
     function showModal() {
         $('#myModal').on('shown.bs.modal', function () {
@@ -39,12 +46,18 @@ $(document).ready(function () {
         showModal();
     });
 
-    $("#addPlayer").on("click", function () {
-
+    $("#addPlayer1").on("click", function () {
         playerOne = $("#playerOne").val().trim();
-        playerTwo = $("#playerTwo").val().trim();
-        database.ref().set({
+        database.ref().update({
             playerOne,
+            winsOne: 0,
+            winsTwo: 0,
+        })
+    });
+
+    $("#addPlayer2").on("click", function () {
+        playerTwo = $("#playerTwo").val().trim();
+        database.ref().update({
             playerTwo,
             winsOne: 0,
             winsTwo: 0,
@@ -61,12 +74,12 @@ $(document).ready(function () {
         console.log(this)
     })
 
-    $("#submitOne").on("click", function(){
+    $("#submitOne").on("click", function () {
         database.ref().update({
             userOneGuess: userGuess1,
         })
         checkForWin();
-        })
+    })
 
 
     $(document).on("click", ".press2", function () {
@@ -74,7 +87,7 @@ $(document).ready(function () {
         console.log(this)
     })
 
-    $("#submitTwo").on("click", function(){
+    $("#submitTwo").on("click", function () {
         database.ref().update({
             userTwoGuess: userGuess2,
         })
@@ -82,44 +95,71 @@ $(document).ready(function () {
 
     })
 
-function checkForWin() {
-    console.log("User Guess 1" + userGuess1)
-    console.log("User Guess 2" + userGuess2)
-    if(userGuess1 == "paper" && userTwoGuess == "rock"){
-        winsOne++;
-    }
-    if(userGuess1 == "rock" && userGuess2 == "scissors"){
-        winsOne++;
-    }
-    if(userGuess1  == "scissors" && userGuess2 == "paper"){
-        winsOne++;
-    }
-    if(userGuess2 == "paper" && userGuess1 == "rock"){
-        winsTwo++;
-    }
-    if(userGuess2 == "rock" && userGuess1 == "scissors"){
-        winsTwo++;
-    }
-    if(userGuess2 == "scissors" && userGuess1 == "paper"){
-        winsTwo++;
-    }
-    database.ref().update({
-        winsOne: winsOne,
-        winsTwo: winsTwo,
+    $(".playAgain").on("click", function () {
+        database.ref().update({
+            userOneGuess: null,
+            userTwoGuess: null
+        })
+        window.location.reload();
     })
 
-    database.ref().on("value", function(snapshot) {
-        $("#winsOne").text("Wins: " + winsOne);
-        $("#winsTwo").text("Wins: " + winsTwo);
-        checkForWin();
-    })
-    console.log("p1 wins: " + winsOne);
-    console.log("p2 wins : " + winsTwo);
-}
-    // database.ref().on("value", function(snapshot) {
-    //     console.log(snapshot.name)
+    function checkForWin() {
+        console.log("User Guess 1" + userGuess1)
+        console.log("User Guess 2" + userGuess2)
+        // if(snapshot.val().userOneGuess == "paper" && snapshot.val().userTwoGuess == "rock"){
+        //     winsOne++;
+        // }
+        // if(snapshot.val().userOneGuess == "rock" && snapshot.val().userTwoGuess == "scissors"){
+        //     winsOne++;
+        // }
+        // if(snapshot.val().userOneGuess  == "scissors" && snapshot.val().userTwoGuess == "paper"){
+        //     winsOne++;
+        // }
+        // if(snapshot.val().userTwoGuess == "paper" && snapshot.val().userOneGuess == "rock"){
+        //     winsTwo++;
+        // }
+        // if(snapshot.val().userTwoGuess == "rock" && snapshot.val().userOneGuess == "scissors"){
+        //     winsTwo++;
+        // }
+        // if(snapshot.val().userTwoGuess == "scissors" && snapshot.val().userOneGuess == "paper"){
+        //     winsTwo++;
+        // }
+        database.ref().update({
+            winsOne: winsOne,
+            winsTwo: winsTwo,
+        })
 
-    // })
+        database.ref().on("value", function (snapshot) {
+
+        })
+        console.log("p1 wins: " + winsOne);
+        console.log("p2 wins : " + winsTwo);
+    }
+    database.ref().on("value", function (snapshot) {
+        if (snapshot.val().userOneGuess == "paper" && snapshot.val().userTwoGuess == "rock") {
+            snapshot.val().winsOne++;
+        }
+        if (snapshot.val().userOneGuess == "rock" && snapshot.val().userTwoGuess == "scissors") {
+            snapshot.val().winsOne++;
+        }
+        if (snapshot.val().userOneGuess == "scissors" && snapshot.val().userTwoGuess == "paper") {
+            snapshot.val().winsOne++;
+        }
+        if (snapshot.val().userTwoGuess == "paper" && snapshot.val().userOneGuess == "rock") {
+            snapshot.val().winsTwo++;
+        }
+        if (snapshot.val().userTwoGuess == "rock" && snapshot.val().userOneGuess == "scissors") {
+            snapshot.val().winsTwo++;
+        }
+        if (snapshot.val().userTwoGuess == "scissors" && snapshot.val().userOneGuess == "paper") {
+            snapshot.val().winsTwo++;
+        }
+        
+        $("#winsOne").text("Wins: " + snapshot.val().winsOne);
+        $("#winsTwo").text("Wins: " + snapshot.val().winsTwo);
+        console.log(snapshot.name)
+        console.log(snapshot.val().userOneGuess);
+    })
 
 
 });

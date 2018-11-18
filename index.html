@@ -20,15 +20,25 @@
 
     <!-- Button trigger modal -->
     <div class="row">
-        <div class="col-lg-12 text-center">
-            <button type="button" id="start-game" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                Start Game
+        <div class="col-lg-6 text-center">
+            <button type="button" id="start-game" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter1">
+                Add Player 1
+            </button>
+        </div>
+        <br> <br>
+        <div class="col-lg-6 text-center">
+            <button type="button" id="start-game" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter2">
+                Add Player 2
             </button>
         </div>
     </div>
 
+    <div class="text-center">
+        <button id="restart"> Restart Game </button>
+    </div>
+
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    <div class="modal fade" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -42,13 +52,39 @@
                     <p> Player 1: </p>
                     <input type="text" id="playerOne" placeholder="Username" style="width: 100%">
                     <br><br>
+                    <!-- <p> Player 2: </p>
+                    <input type="text" id="playerTwo" placeholder="Username" style="width: 100%">
+                    <br><br> -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="addPlayer1" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Enter Your Username:</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- <p> Player 1: </p>
+                    <input type="text" id="playerOne" placeholder="Username" style="width: 100%">
+                    <br><br> -->
                     <p> Player 2: </p>
                     <input type="text" id="playerTwo" placeholder="Username" style="width: 100%">
                     <br><br>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" id="addPlayer" class="btn btn-primary">Submit</button>
+                    <button type="button" id="addPlayer2" class="btn btn-primary">Submit</button>
                 </div>
             </div>
         </div>
@@ -84,7 +120,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        Choices <button id="submitOne"> Submit </button>
+                        Choices <button id="submitOne"> Submit </button> <button class="playAgain"> Play another round </button>
                     </div>
                     <div class="card-body">
                         <img class="press1" id="playerOneRock" x="rock" src="assets/images/rock.png" style="height: 160px; width: 160px;">
@@ -96,7 +132,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header">
-                        Choices <button id="submitTwo"> Submit </button>
+                        Choices <button id="submitTwo"> Submit </button> <button class="playAgain"> Play another round </button>
                     </div>
                     <div class="card-body">
                         <img class="press2" id="playerTwoRock" x="rock" src="assets/images/rock.png" style="height: 160px; width: 160px;">
