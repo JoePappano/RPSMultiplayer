@@ -34,6 +34,7 @@ $(document).ready(function () {
         $(".userOne").text(snapshot.val().playerOne);
         $(".userTwo").text(snapshot.val().playerTwo);
     })
+
     //Functions
 
     function showModal() {
@@ -50,8 +51,8 @@ $(document).ready(function () {
         playerOne = $("#playerOne").val().trim();
         database.ref().update({
             playerOne,
-            winsOne: 0,
-            winsTwo: 0,
+            winsOne,
+            winsTwo,
         })
     });
 
@@ -59,8 +60,8 @@ $(document).ready(function () {
         playerTwo = $("#playerTwo").val().trim();
         database.ref().update({
             playerTwo,
-            winsOne: 0,
-            winsTwo: 0,
+            winsOne,
+            winsTwo,
         })
     });
 
@@ -79,6 +80,7 @@ $(document).ready(function () {
             userOneGuess: userGuess1,
         })
         checkForWin();
+        
     })
 
 
@@ -92,7 +94,7 @@ $(document).ready(function () {
             userTwoGuess: userGuess2,
         })
         checkForWin();
-
+        
     })
 
     $(".playAgain").on("click", function () {
@@ -106,60 +108,42 @@ $(document).ready(function () {
     function checkForWin() {
         console.log("User Guess 1" + userGuess1)
         console.log("User Guess 2" + userGuess2)
-        // if(snapshot.val().userOneGuess == "paper" && snapshot.val().userTwoGuess == "rock"){
-        //     winsOne++;
-        // }
-        // if(snapshot.val().userOneGuess == "rock" && snapshot.val().userTwoGuess == "scissors"){
-        //     winsOne++;
-        // }
-        // if(snapshot.val().userOneGuess  == "scissors" && snapshot.val().userTwoGuess == "paper"){
-        //     winsOne++;
-        // }
-        // if(snapshot.val().userTwoGuess == "paper" && snapshot.val().userOneGuess == "rock"){
-        //     winsTwo++;
-        // }
-        // if(snapshot.val().userTwoGuess == "rock" && snapshot.val().userOneGuess == "scissors"){
-        //     winsTwo++;
-        // }
-        // if(snapshot.val().userTwoGuess == "scissors" && snapshot.val().userOneGuess == "paper"){
-        //     winsTwo++;
-        // }
         database.ref().update({
             winsOne: winsOne,
             winsTwo: winsTwo,
         })
-
-        database.ref().on("value", function (snapshot) {
-
-        })
-        console.log("p1 wins: " + winsOne);
-        console.log("p2 wins : " + winsTwo);
+        window.location.reload();
     }
+
+
     database.ref().on("value", function (snapshot) {
         if (snapshot.val().userOneGuess == "paper" && snapshot.val().userTwoGuess == "rock") {
-            snapshot.val().winsOne++;
+            winsOne++;
         }
         if (snapshot.val().userOneGuess == "rock" && snapshot.val().userTwoGuess == "scissors") {
-            snapshot.val().winsOne++;
+            winsOne++;
         }
         if (snapshot.val().userOneGuess == "scissors" && snapshot.val().userTwoGuess == "paper") {
-            snapshot.val().winsOne++;
+            winsOne++;
         }
         if (snapshot.val().userTwoGuess == "paper" && snapshot.val().userOneGuess == "rock") {
-            snapshot.val().winsTwo++;
+            winsTwo++;
         }
         if (snapshot.val().userTwoGuess == "rock" && snapshot.val().userOneGuess == "scissors") {
-            snapshot.val().winsTwo++;
+            winsTwo++;
         }
         if (snapshot.val().userTwoGuess == "scissors" && snapshot.val().userOneGuess == "paper") {
-            snapshot.val().winsTwo++;
+            winsTwo++;
         }
-        
+
+
         $("#winsOne").text("Wins: " + snapshot.val().winsOne);
         $("#winsTwo").text("Wins: " + snapshot.val().winsTwo);
-        console.log(snapshot.name)
-        console.log(snapshot.val().userOneGuess);
+
+        console.log("This is database Wins for player 1: " + snapshot.val().winsOne)
+        console.log("This is database Wins for player 2: " + snapshot.val().winsTwo)
+        console.log("This is value stored in variable winsOne: " + winsOne)
+        console.log("This is value stored in variable winsTwo: " + winsTwo)
+
     })
-
-
 });
