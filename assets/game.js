@@ -37,6 +37,50 @@ $(document).ready(function () {
 
     //Functions
 
+    // function checkForWin() {
+    //     console.log("User Guess 1" + userGuess1)
+    //     console.log("User Guess 2" + userGuess2)
+    //     // if (userGuess1 == "paper" && userGuess2 == "rock") {
+    //     //     winsOne++;
+    //     // }
+    //     // if (userGuess1 == "rock" && userGuess2 == "scissors") {
+    //     //     winsOne++;
+    //     // }
+    //     // if (userGuess1 == "scissors" && userGuess2 == "paper") {
+    //     //     winsOne++;
+    //     // }
+    //     // if (userGuess2 == "paper" && userGuess1 == "rock") {
+    //     //     winsTwo++;
+    //     // }
+    //     // if (userGuess2 == "rock" && userGuess1 == "scissors") {
+    //     //     winsTwo++;
+    //     // }
+    //     // if (userGuess2 == "scissors" && userGuess1 == "paper") {
+    //     //     winsTwo++;
+    //     // }
+    //     console.log("This is value stored in variable winsOne: " + winsOne)
+    //     console.log("This is value stored in variable winsTwo: " + winsTwo)
+
+    //     database.ref().update({
+    //         winsOne,
+    //         winsTwo,
+    //     })
+
+    //     // database.ref(winsOne).push({
+    //     //     winsOne,
+    //     // })
+
+    //     // database.ref(winsTwo).push({
+    //     //     winsTwo,
+    //     // })
+                
+
+
+    //     console.log("This is value stored in variable winsOne: " + winsOne)
+    //     console.log("This is value stored in variable winsTwo: " + winsTwo)
+    
+    // }
+
     function showModal() {
         $('#myModal').on('shown.bs.modal', function () {
             $('#myInput').trigger('focus')
@@ -51,8 +95,8 @@ $(document).ready(function () {
         playerOne = $("#playerOne").val().trim();
         database.ref().update({
             playerOne,
-            winsOne,
-            winsTwo,
+            winsOne: 0,
+            winsTwo: 0,
         })
     });
 
@@ -60,8 +104,8 @@ $(document).ready(function () {
         playerTwo = $("#playerTwo").val().trim();
         database.ref().update({
             playerTwo,
-            winsOne,
-            winsTwo,
+            winsOne: 0,
+            winsTwo: 0,
         })
     });
 
@@ -79,8 +123,8 @@ $(document).ready(function () {
         database.ref().update({
             userOneGuess: userGuess1,
         })
-        checkForWin();
-        
+        // checkForWin();
+        // window.location.reload();
     })
 
 
@@ -93,8 +137,8 @@ $(document).ready(function () {
         database.ref().update({
             userTwoGuess: userGuess2,
         })
-        checkForWin();
-        
+        // checkForWin();
+        // window.location.reload();
     })
 
     $(".playAgain").on("click", function () {
@@ -102,48 +146,54 @@ $(document).ready(function () {
             userOneGuess: null,
             userTwoGuess: null
         })
+
         window.location.reload();
     })
-
-    function checkForWin() {
-        console.log("User Guess 1" + userGuess1)
-        console.log("User Guess 2" + userGuess2)
-        database.ref().update({
-            winsOne: winsOne,
-            winsTwo: winsTwo,
-        })
-        window.location.reload();
-    }
 
 
     database.ref().on("value", function (snapshot) {
-        if (snapshot.val().userOneGuess == "paper" && snapshot.val().userTwoGuess == "rock") {
-            winsOne++;
-        }
-        if (snapshot.val().userOneGuess == "rock" && snapshot.val().userTwoGuess == "scissors") {
-            winsOne++;
-        }
-        if (snapshot.val().userOneGuess == "scissors" && snapshot.val().userTwoGuess == "paper") {
-            winsOne++;
-        }
-        if (snapshot.val().userTwoGuess == "paper" && snapshot.val().userOneGuess == "rock") {
-            winsTwo++;
-        }
-        if (snapshot.val().userTwoGuess == "rock" && snapshot.val().userOneGuess == "scissors") {
-            winsTwo++;
-        }
-        if (snapshot.val().userTwoGuess == "scissors" && snapshot.val().userOneGuess == "paper") {
-            winsTwo++;
-        }
 
 
-        $("#winsOne").text("Wins: " + snapshot.val().winsOne);
-        $("#winsTwo").text("Wins: " + snapshot.val().winsTwo);
+        winsOne = snapshot.val().winsOne;
+        winsTwo = snapshot.val().winsTwo;
 
-        console.log("This is database Wins for player 1: " + snapshot.val().winsOne)
-        console.log("This is database Wins for player 2: " + snapshot.val().winsTwo)
-        console.log("This is value stored in variable winsOne: " + winsOne)
-        console.log("This is value stored in variable winsTwo: " + winsTwo)
+        if (snapshot.val().userOneGuess == "paper" && snapshot.val().userTwoGuess == "rock" || (
+            snapshot.val().userOneGuess == "rock" && snapshot.val().userTwoGuess == "scissors") || 
+           (snapshot.val().userOneGuess == "scissors" && snapshot.val().userTwoGuess == "paper")
+        ) {
+                winsOne++;
+                updateWinTotals();
+        }
+        else if (snapshot.val().userTwoGuess == "paper" && snapshot.val().userOneGuess  == "rock" ||
+            (snapshot.val().userTwoGuess == "rock" && snapshot.val().userOneGuess  == "scissors") ||
+            (snapshot.val().userTwoGuess == "scissors" && snapshot.val().userOneGuess  == "paper")
+        ) {
+                winsTwo++;
+                updateWinTotals();
+        }
+
+        $("#winsOne").text("Wins: " + winsOne);
+        $("#winsTwo").text("Wins: " + winsTwo);
+
 
     })
+
+    function updateWinTotals() {
+        database.ref().update(
+            {
+                winsOne: winsOne,
+                winsTwo: winsTwo,
+                userOneGuess: null,
+                userTwoGuess: null
+            }
+        );
+    }
+
+
+    // console.log("This is database Wins for player 1: " + snapshot.val().winsOne)
+    // console.log("This is database Wins for player 2: " + snapshot.val().winsTwo)
+    // console.log("This is value stored in variable winsOne: " + winsOne)
+    // console.log("This is value stored in variable winsTwo: " + winsTwo)
+
+
 });
